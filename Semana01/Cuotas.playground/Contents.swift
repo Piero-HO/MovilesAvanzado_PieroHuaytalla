@@ -24,5 +24,13 @@ let descuento = CalcularDescuento(cantidad: cantidad, subtotal: subtotal)
 //hallar el montobase : subtotal - descuento
 //hallar el igv : montobase * igv
 //total : montobase + igv
-//commt
+//commit
 //mostrar los datos
+let montobase = subtotal - descuento
+let igvMonto = montobase * igv
+let total = montobase + igvMonto
+print("el descuento es \(descuento)")
+print("el montobase es \(montobase)")
+print("el igv es \(igvMonto)")
+print("el producto \(producto) cuesta S/. \(total)")
+

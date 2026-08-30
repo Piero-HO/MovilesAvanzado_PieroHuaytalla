@@ -17,3 +17,22 @@ print("6 (20%)")
 print("12 (40%)")
 print("24 (60%)")
 
+let meses = Int(readLine() ?? "") ?? 0
+var interes: Double = 0
+
+switch meses {
+case 6:
+    interes = 0.20
+case 12:
+    interes = 0.40
+case 24:
+    interes = 0.60
+default:
+    print("Opcion no valida")
+    exit(0)
+}
+let montoInteres = montoTotal * interes
+let montoFinanciado = montoTotal + montoInteres
+let cuotaMensual = montoFinanciado / Double(meses)
+
+

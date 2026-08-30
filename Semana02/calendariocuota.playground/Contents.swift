@@ -93,3 +93,33 @@ if !planesValidos.contains(planPagoMeses) {
             if mesActual == mesAdelanto {
                 pagoDeEsteMes += montoAdicional // Sumamos el extra a la cuota base
             }
+            
+            // Validación importante: Si el pago programado es MAYOR a la deuda restante,
+            // ajustamos el pago para cobrar exactamente lo que falta y no dejar saldo negativo.
+            if pagoDeEsteMes > restaPorPagar {
+                pagoDeEsteMes = restaPorPagar
+            }
+            
+            // Actualizamos la deuda restándole el pago que se acaba de hacer
+            restaPorPagar -= pagoDeEsteMes
+            
+            // Incrementamos nuestro contador de meses pagados
+            mesesPagadosRealmente += 1
+            
+            // Formateamos los números a 2 decimales y usamos tabulaciones (\t) para simular las columnas
+            let lineaImpresion = String(format: "%d\t%@\t%.2f\t\t%.2f\t\t%.2f",
+                                        mesActual,
+                                        fechaString,
+                                        montoInicialDelMes,
+                                        pagoDeEsteMes,
+                                        restaPorPagar)
+            
+            // Imprimimos la fila del mes actual en la consola
+            print(lineaImpresion)
+        }
+    
+    // ==========================================
+    // 7. IMPRESIÓN DEL RESUMEN FINAL
+    // ==========================================
+    print("\nMeses pagados \(mesesPagadosRealmente) de \(planPagoMeses)")
+}

@@ -35,7 +35,13 @@ let montoInteres = montoTotal * interes
 let montoFinanciado = montoTotal + montoInteres
 let cuotaMensual = montoFinanciado / Double(meses)
 
-print("\n========== Plan de pago ===========")
-print("Producto: \(producto) Interes: \(interes * 100)%  Cuota M: \(cuotaMensual)")
-print("Monto compra: \(montoTotal) Monto finan: \(montoFinanciado)")
+print("\n=================== Plan de pago ===================")
+print("Producto: \(producto) \tInteres: \(interes * 100)%  \tCuota M: \(cuotaMensual)")
+print("Monto compra: \(montoTotal) \tMonto finan: \(montoFinanciado)")
+
 print("\nMes \tMonto Inicial \tCuota Mensual \tResta x Pago")
+var saldo = montoFinanciado
+for mes in 1...meses {
+    print("\(mes) \t\(saldo) \t\t\(cuotaMensual) \t\t\(saldo - cuotaMensual)")
+    saldo -= cuotaMensual
+}

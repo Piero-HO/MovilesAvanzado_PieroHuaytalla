@@ -46,7 +46,7 @@ var frutas = ["Manzana", "Plátano", "Naranja"]
 frutas.append("7")                    // FIX 1: Se puso comillas ya que no ingresa entero o puede cambiarse frutas.append("Uva")
 
 var colores = ["Rojo", "Azul", "Verde"]
-colores.append("Amarillo")          // FIX 2: se puso "var" para que sea mutable
+colores.append("Amarillo")          // FIX 2: se puso "var" para que sea mutable.
 
 let numeros = [10, 20, 30, 40, 50]
 print(numeros[4])                   // FIX 3: se puso 4 ya que el 5 pasa ael rango de lo que hay en la lista

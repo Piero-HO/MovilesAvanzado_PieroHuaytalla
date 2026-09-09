@@ -573,3 +573,73 @@ func opcionRuta() {
         "\(max(0, ruta.count - 1))"
     )
 }
+let requisitos = [
+    "RF-01 Buscar estaciones por nombre.",
+    "RF-02 Mostrar línea, estado, ascensor y accesibilidad.",
+    "RF-03 Listar estaciones por línea.",
+    "RF-04 Identificar las estaciones de Línea 2 y su estado.",
+    "RF-05 Mostrar conexiones entre líneas.",
+    "RF-06 Mostrar conexiones con el Metropolitano.",
+    "RF-07 Recomendar estaciones para destinos.",
+    "RF-08 Calcular una ruta entre estaciones.",
+    "RF-09 Validar entradas del usuario.",
+    "RF-10 Mantener la lógica preparada para una futura app móvil."
+]
+
+func verRequisitos() {
+    print("\n=== REQUERIMIENTOS FUNCIONALES ===")
+
+    for requisito in requisitos {
+        print("- \(requisito)")
+    }
+}
+
+func menu() {
+    print("""
+    
+    ============ METRO LIMA GO ============
+    
+    1. Buscar estación
+    2. Ver estaciones por línea
+    3. Ver conexiones
+    4. Consultar destino
+    5. Calcular ruta
+    6. Ver requerimientos
+    0. Salir
+    
+    Seleccione una opción:
+    """)
+}
+
+var activo = true
+
+while activo {
+    menu()
+
+    switch readLine() {
+    case "1":
+        opcionBuscar()
+
+    case "2":
+        opcionLinea()
+
+    case "3":
+        cruces()
+
+    case "4":
+        opcionDestino()
+
+    case "5":
+        opcionRuta()
+
+    case "6":
+        verRequisitos()
+
+    case "0":
+        activo = false
+        print("Programa finalizado.")
+
+    default:
+        print("Opción inválida.")
+    }
+}

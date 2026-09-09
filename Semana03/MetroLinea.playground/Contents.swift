@@ -287,3 +287,174 @@ let destinos: [String: Destino] = [
         detalle: "La estación Aeropuerto pertenece a la Línea 4."
     )
 ]
+func buscar(_ texto: String) -> [(String, Estacion)] {
+    let consulta = normalizar(texto)
+
+    return estaciones
+        .filter {
+            normalizar($0.key).contains(consulta)
+        }
+        .sorted {
+            $0.key < $1.key
+        }
+}
+
+func mostrarEstacion(_ nombre: String) {
+    guard let estacion = estaciones[nombre] else {
+        print("Estación no encontrada.")
+        return
+    }
+
+    print("\n=== \(estacion.nombre) ===")
+    print(
+        "Línea(s): " +
+        estacion.lineas.map { $0.rawValue }.joined(separator: ", ")
+    )
+    print("Estado: \(estacion.estado.rawValue)")
+    print("Ascensor: \(estacion.ascensor ? "Sí" : "No")")
+    print("Accesible: \(estacion.accesible ? "Sí" : "No")")
+
+    if estacion.conexiones.isEmpty {
+        print("Conexiones: no registradas.")
+    } else {
+        print("Conexiones:")
+
+        for conexion in estacion.conexiones {
+            print("- \(conexion.linea.rawValue): \(conexion.destino)")
+            print("  Estado: \(conexion.estado.rawValue)")
+            print("  \(conexion.detalle)")
+        }
+    }
+}
+
+func elegir(_ resultados: [(String, Estacion)]) -> String? {
+    if resultados.count == 1 {
+        return resultados[0].0
+    }
+
+    for (i, resultado) in resultados.enumerated() {
+        print(
+            "\(i + 1). \(resultado.1.nombre) - " +
+            resultado.1.lineas.map { $0.rawValue }.joined(separator: ", ")
+        )
+    }
+
+    guard
+        let numero = Int(readLine() ?? ""),
+        (1...resultados.count).contains(numero)
+    else {
+        return nil
+    }
+
+    return resultados[numero - 1].0
+}
+
+func opcionBuscar() {
+    print("Ingrese el nombre de la estación:")
+
+    let resultados = buscar(readLine() ?? "")
+
+    guard !resultados.isEmpty,
+          let nombre = elegir(resultados)
+    else {
+        print("No se encontraron estaciones.")
+        return
+    }
+
+    mostrarEstacion(nombre)
+}
+
+func listar(_ linea: Linea) {
+    let lista = estaciones.values
+        .filter { $0.lineas.contains(linea) }
+        .sorted { $0.nombre < $1.nombre }
+
+    print("\n=== \(linea.rawValue) ===")
+
+    for estacion in lista {
+        print(
+            "- \(estacion.nombre) | " +
+            "\(estacion.estado.rawValue) | " +
+            "Ascensor: \(estacion.ascensor ? "Sí" : "No")"
+        )
+    }
+
+    print("Total: \(lista.count)")
+}
+
+func opcionLinea() {
+    print("""
+    
+    1. Línea 1
+    2. Línea 2
+    3. Línea 3
+    4. Línea 4
+    5. Metropolitano
+    """)
+
+    switch readLine() {
+    case "1": listar(.l1)
+    case "2": listar(.l2)
+    case "3": listar(.l3)
+    case "4": listar(.l4)
+    case "5": listar(.met)
+    default: print("Opción inválida.")
+    }
+}
+
+func opcionDestino() {
+    print("Ingrese destino:")
+
+    let consulta = normalizar(readLine() ?? "")
+
+    guard let destino =
+        destinos[consulta] ??
+        destinos.first(where: {
+            consulta.contains($0.key)
+        })?.value
+    else {
+        print("Destino no registrado.")
+        return
+    }
+
+    print("\nDestino: \(destino.nombre)")
+    print("Estación recomendada: \(destino.estacion)")
+    print(destino.detalle)
+
+    if let estacion = estaciones[destino.estacion],
+       estacion.estado != .operativa {
+        print("ADVERTENCIA: infraestructura aún no operativa.")
+    }
+}
+
+func cruces() {
+    print("""
+    
+    === CONEXIONES PRINCIPALES ===
+    
+    28 de Julio:
+    Línea 1 <-> Línea 2
+    
+    Estación Central:
+    Línea 2 <-> Metropolitano
+    
+    Carmen de la Legua:
+    Línea 2 <-> Línea 4
+    
+    Cabitos:
+    Línea 1 <-> Línea 3
+    
+    Estación Central:
+    Línea 2 <-> Línea 3
+    
+    Conde de San Isidro:
+    Línea 3 <-> Línea 4
+    
+    La Cultura:
+    Línea 1 <-> Línea 4
+    
+    Grau:
+    Pertenece a Línea 1.
+    No es un intercambio directo con Línea 2.
+    """)
+}

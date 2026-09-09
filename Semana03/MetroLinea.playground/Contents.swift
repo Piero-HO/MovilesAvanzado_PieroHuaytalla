@@ -194,3 +194,96 @@ for nombre in nombresMet {
         agregarEstacion(nombre, [.met], .operativa)
     }
 }
+conectar(
+    "28 de Julio",
+    "Gamarra",
+    .l1,
+    .construccion,
+    "Referencia temporal para el intercambio entre Línea 1 y Línea 2."
+)
+
+conectar(
+    "Estación Central",
+    "Central",
+    .met,
+    .construccion,
+    "Conexión futura con el Metropolitano."
+)
+
+conectar(
+    "Carmen de la Legua",
+    "Carmen de la Legua",
+    .l4,
+    .construccion,
+    "Futuro intercambio entre Línea 2 y Línea 4."
+)
+
+conectar(
+    "Cabitos",
+    "Cabitos",
+    .l3,
+    .proyectada,
+    "Futuro intercambio entre Línea 1 y Línea 3."
+)
+
+conectar(
+    "Estación Central",
+    "Estación Central",
+    .l3,
+    .proyectada,
+    "Futuro intercambio entre Línea 2 y Línea 3."
+)
+
+conectar(
+    "Conde de San Isidro",
+    "Conde de San Isidro",
+    .l4,
+    .proyectada,
+    "Futuro intercambio entre Línea 3 y Línea 4."
+)
+
+conectar(
+    "La Cultura",
+    "La Cultura",
+    .l4,
+    .construccion,
+    "Futuro intercambio entre Línea 1 y Línea 4."
+)
+
+let destinos: [String: Destino] = [
+    "estadio nacional": Destino(
+        nombre: "Estadio Nacional del Perú",
+        estacion: "Estadio Nacional",
+        detalle: "Usa el Metropolitano y baja en Estadio Nacional."
+    ),
+
+    "centro de lima": Destino(
+        nombre: "Centro Histórico de Lima",
+        estacion: "Jirón de la Unión",
+        detalle: "Jirón de la Unión es una opción para el Centro de Lima."
+    ),
+
+    "miraflores": Destino(
+        nombre: "Miraflores",
+        estacion: "Ricardo Palma",
+        detalle: "Ricardo Palma es una opción para llegar a Miraflores."
+    ),
+
+    "san isidro": Destino(
+        nombre: "San Isidro",
+        estacion: "Canaval y Moreyra",
+        detalle: "Canaval y Moreyra es una opción para San Isidro."
+    ),
+
+    "gamarra": Destino(
+        nombre: "Gamarra",
+        estacion: "Gamarra",
+        detalle: "Usa Línea 1 y baja en Gamarra."
+    ),
+
+    "aeropuerto": Destino(
+        nombre: "Aeropuerto Internacional Jorge Chávez",
+        estacion: "Aeropuerto",
+        detalle: "La estación Aeropuerto pertenece a la Línea 4."
+    )
+]

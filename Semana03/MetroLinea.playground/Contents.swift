@@ -458,3 +458,118 @@ func cruces() {
     No es un intercambio directo con Línea 2.
     """)
 }
+typealias Grafo = [String: [String]]
+
+func crearGrafo() -> Grafo {
+    var grafo: Grafo = [:]
+
+    func unir(_ a: String, _ b: String) {
+        grafo[a, default: []].append(b)
+        grafo[b, default: []].append(a)
+    }
+
+    for lista in [
+        nombresL1,
+        nombresL2,
+        nombresL3,
+        nombresL4,
+        nombresMet
+    ] {
+        for i in 0..<(lista.count - 1) {
+            unir(lista[i], lista[i + 1])
+        }
+    }
+
+    for estacion in estaciones.values {
+        for conexion in estacion.conexiones {
+            unir(estacion.nombre, conexion.destino)
+        }
+    }
+
+    return grafo
+}
+
+func bfs(
+    _ origen: String,
+    _ destino: String,
+    _ grafo: Grafo
+) -> [String]? {
+
+    var cola = [origen]
+    var visitados: Set<String> = [origen]
+    var anterior: [String: String] = [:]
+
+    while !cola.isEmpty {
+        let actual = cola.removeFirst()
+
+        if actual == destino {
+            break
+        }
+
+        for vecino in grafo[actual, default: []] {
+            if !visitados.contains(vecino) {
+                visitados.insert(vecino)
+                anterior[vecino] = actual
+                cola.append(vecino)
+            }
+        }
+    }
+
+    guard visitados.contains(destino) else {
+        return nil
+    }
+
+    var ruta = [destino]
+    var actual = destino
+
+    while let padre = anterior[actual] {
+        ruta.append(padre)
+        actual = padre
+    }
+
+    return ruta.reversed()
+}
+
+func opcionRuta() {
+    print("Estación de origen:")
+
+    let origenTexto = readLine() ?? ""
+
+    guard let origen = buscar(origenTexto).first?.0 else {
+        print("Origen no encontrado.")
+        return
+    }
+
+    print("Destino:")
+
+    let destinoTexto = normalizar(readLine() ?? "")
+
+    let destino =
+        destinos[destinoTexto]?.estacion ??
+        buscar(destinoTexto).first?.0
+
+    guard let destino else {
+        print("Destino no encontrado.")
+        return
+    }
+
+    guard let ruta = bfs(
+        origen,
+        destino,
+        crearGrafo()
+    ) else {
+        print("No se encontró una ruta.")
+        return
+    }
+
+    print("\n=== RUTA ===")
+
+    for (i, estacion) in ruta.enumerated() {
+        print("\(i + 1). \(estacion)")
+    }
+
+    print(
+        "Paradas aproximadas: " +
+        "\(max(0, ruta.count - 1))"
+    )
+}

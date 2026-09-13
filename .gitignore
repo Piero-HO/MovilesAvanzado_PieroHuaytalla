@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# Xcode: configuracion y estado local de cada usuario
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+
+# Resultados de compilacion
+build/
+DerivedData/
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Swift Package Manager
+.build/
+.swiftpm/xcode/package.xcworkspace/xcuserdata/
+
+# CocoaPods (conserva Podfile y Podfile.lock)
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Variables locales y secretos
+.env
+.env.*
+!.env.example

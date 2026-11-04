@@ -75,6 +75,54 @@ class ViewController: UIViewController,
         
         return celda
     }
+    // MARK: - DELETE: eliminar un contacto
+    func eliminarContacto(at indexPath: IndexPath) {
+        let contexto = conexion()
+        let contactoEliminar = contactos[indexPath.row]
+        contexto.delete(contactoEliminar)
+        do {
+            try contexto.save()
+            contactos.remove(at: indexPath.row)
+            TablaContacto.deleteRows(at: [indexPath], with: .automatic)
+        } catch {
+            print("Error al eliminar: \(error)")
+        }
+    }
+
+    // Permite eliminar deslizando la fila hacia la izquierda.
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            eliminarContacto(at: indexPath)
+        }
+    }
+
+    // MARK: - UPDATE: editar un contacto (al tocar una fila)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let contacto = contactos[indexPath.row]
+        let alert = UIAlertController(title: "Editar Contacto", message: "Modifica los datos", preferredStyle: .alert)
+        alert.addTextField { $0.text = contacto.nombre }
+        alert.addTextField { $0.text = contacto.telefono }
+        alert.addTextField { $0.text = contacto.direccion }
+
+        let actionGuardar = UIAlertAction(title: "Guardar", style: .default) { _ in
+            guard let nombre = alert.textFields?[0].text, !nombre.isEmpty else { return }
+            contacto.nombre = nombre
+            contacto.telefono = alert.textFields?[1].text
+            contacto.direccion = alert.textFields?[2].text
+            do {
+                try self.conexion().save()
+                self.cargarInfoCoreData()
+                self.TablaContacto.reloadData()
+            } catch {
+                print("Error al actualizar: \(error)")
+            }
+        }
+        alert.addAction(actionGuardar)
+        alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+        present(alert, animated: true)
+    }
+
     // MARK: - CREATE: agregar un contacto
     // Acción vinculada al Bar Button Item (+)
     @IBAction func agregarContacto(_ sender: UIBarButtonItem) {
